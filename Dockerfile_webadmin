@@ -1,9 +1,10 @@
 FROM php:7.4-apache
+RUN curl -L https://deb.nodesource.com/setup_14.x | bash
 RUN apt-get update && apt-get install -y git unzip zip git nodejs wget libzip-dev
 RUN docker-php-ext-install pdo pdo_mysql mysqli zip
 
 WORKDIR /root
-RUN git clone https://github.com/armindocachada/OpenVPN-Admin
+RUN git clone https://github.com/lhphuong86/OpenVPN-Admin
 
 RUN ["/bin/bash", "-c", "cp -r /root/OpenVPN-Admin/{index.php,authenticator_response.php,sql,bower.json,.bowerrc,js,include,css,installation/client-conf} /var/www/html/"]
 RUN ls -alh /var/www/html/
@@ -19,7 +20,10 @@ RUN sed -i "s/\$host\ =\ 'localhost'/\$host = 'db'/" "/var/www/html/include/conf
     sed -i "s/\$pass\ =\ ''/\$pass = getenv('OPENVPN_ADMIN_PASSWORD')/" "/var/www/html/include/config.php" && \
     sed -i "s/\$user\ =\ ''/\$user = getenv('OPENVPN_ADMIN_USER')/" "/var/www/html/include/config.php" && \
     sed -i "s/\$app_name\ =\ ''/\$app_name = getenv('OPENVPN_APP_NAME')/" "/var/www/html/include/config.php"
-RUN curl -L https://npmjs.org/install.sh | sh
+#RUN curl -L https://npmjs.org/install.sh | sh
+RUN npm version
+RUN npm install npm@8 -g
+#RUN curl -L https://registry.npmjs.org/npm/-/npm-8.19.4.tgz | sh
 
 WORKDIR /var/www/html
 RUN npm install -g bower

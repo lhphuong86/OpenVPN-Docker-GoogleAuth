@@ -45,6 +45,8 @@ iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 # ensure that we are using the port specifiedby HOST_SSL_PORT
 sed -i "s/port 443/port $HOST_SSL_PORT/" /etc/openvpn/server.conf;
+sed -i "s/80.67.169.12/8.8.8.8/" /etc/openvpn/server.conf;
+sed -i "s/80.67.169.40/8.8.4.4/" /etc/openvpn/server.conf;
 
 # Need to feed key password
 /usr/sbin/openvpn --cd /etc/openvpn/ --config /etc/openvpn/server.conf

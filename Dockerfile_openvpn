@@ -2,8 +2,21 @@ FROM centos/php-72-centos7
 
 USER root
 
-LABEL maintainer="Armindo Cachada <armindo.cachada@spltech.co.uk>"
+LABEL maintainer="zonlibi <phuongle@fincorp.vn>"
 
+#RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#RUN yum update
+#RUN cat /etc/yum.repos.d/CentOS-Base.repo
+RUN ls /etc/yum.repos.d/
+#RUN cat /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+RUN yum-config-manager --disable centos-sclo-rh
+RUN yum-config-manager --disable centos-sclo-sclo
+#RUN sed -i s/enabled=1/enabled=0/ /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+RUN sed -i s/#baseurl/baseurl/ /etc/yum.repos.d/CentOS-Base.repo
+RUN sed -i s/mirrorlist.centos.org/vault.centos.org/ /etc/yum.repos.d/CentOS-Base.repo
+RUN sed -i s/mirror.centos.org/vault.centos.org/ /etc/yum.repos.d/CentOS-Base.repo
+RUN yum clean all
+#RUN cat /etc/yum.repos.d/CentOS-Base.repo
 RUN yum install -y epel-release
 RUN yum install -y openvpn sed git openssl mysql
 RUN ln -s /opt/rh/rh-php72/root/usr/bin/php /usr/bin/

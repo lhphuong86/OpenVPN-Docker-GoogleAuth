@@ -42,7 +42,7 @@ services:
     command: tail -f /dev/null
 
   db:
-    image: mariadb
+    image: mariadb:10.8.2
     container_name: db
     restart: always
     environment:
@@ -53,13 +53,17 @@ services:
     volumes:
       - db_data:/var/lib/mysql
   googleauth:
+    restart: always
     container_name: googleauth
+    ports:
+      - 8081:80
     build:
         context:  .
         dockerfile: Dockerfile_googleauth
 
   webadmin:
     container_name: webadmin
+    restart: always
     depends_on:
       - db
       - openvpn
